@@ -22,17 +22,22 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
   let checkboxStatus = "";
-  if (currentUser.isFavorite(story)) {
-    checkboxStatus = "checked";
-  }
+  let favorite = "";
   let remove = "";
-  if (story.username === currentUser.username) {
-    remove = '<a href="#" class="remove-story">remove</a>';
+  if (currentUser) {
+    favorite = '<input type="checkbox" class="fav-check" ${checkboxStatus}/>';
+    if (currentUser.isFavorite(story)) {
+      checkboxStatus = "checked";
+    }
+    if (story.username === currentUser.username) {
+      remove = '<a href="#" class="remove-story">remove</a>';
+    }
   }
+
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
-      <input type="checkbox" class="fav-check" ${checkboxStatus}/>
+      ${favorite}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
