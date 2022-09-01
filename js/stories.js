@@ -25,10 +25,10 @@ function generateStoryMarkup(story) {
   let favorite = "";
   let remove = "";
   if (currentUser) {
-    favorite = '<input type="checkbox" class="fav-check" ${checkboxStatus}/>';
     if (currentUser.isFavorite(story)) {
       checkboxStatus = "checked";
     }
+    favorite = `<input type="checkbox" class="fav-check" ${checkboxStatus}/>`;
     if (story.username === currentUser.username) {
       remove = '<a href="#" class="remove-story">remove</a>';
     }
