@@ -6,3 +6,6 @@
 4. Style the application so that it is presentable on mobile devices.
 5. Add infinite scroll! When a user scrolls to the bottom of the page, load more stories.
 6.  Come up with some other features you can build using what our Hack or Snooze API makes available to you!
+## From Review
+7. require in html inputs + backend protection for empty submit
+8. defensive programming - try catch 

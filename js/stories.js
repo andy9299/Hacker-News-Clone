@@ -93,7 +93,6 @@ async function submit(evt) {
 
   await storyList.addStory(currentUser, { title, author, url });
 
-  $loginForm.trigger("reset");
   hidePageComponents();
   putStoriesOnPage();
 }

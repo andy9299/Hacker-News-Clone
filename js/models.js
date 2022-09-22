@@ -24,9 +24,7 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    let domain = new URL(this.url);
-    domain = domain.hostname;
-    return domain;
+    return new URL(this.url).hostname;
   }
 }
 
@@ -53,6 +51,9 @@ class StoryList {
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
     //  instance method?
+    //  So that when we fill a StoryList with getstories, we can call the method
+    //  without creating a new instance of the class. We don't have to create 
+    //  another StoryList just to fill one.
 
     // query the /stories endpoint (no auth required)
     const response = await axios({
@@ -61,10 +62,8 @@ class StoryList {
     });
 
     // turn plain old story objects from API into instances of Story class
-    const stories = response.data.stories.map(story => new Story(story));
-
     // build an instance of our own class using the new array of stories
-    return new StoryList(stories);
+    return new StoryList(response.data.stories.map(story => new Story(story)));
   }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
@@ -167,7 +166,7 @@ class User {
       data: { user: { username, password } },
     });
 
-    let { user } = response.data;
+    let { user, token } = response.data;
 
     return new User(
       {
@@ -177,7 +176,7 @@ class User {
         favorites: user.favorites,
         ownStories: user.stories
       },
-      response.data.token
+      token
     );
   }
 
@@ -235,7 +234,7 @@ class User {
   }
   // checks if the story is already in favorite
   isFavorite(story) {
-    return this.favorites.some(stry => stry.storyId === story.storyId);
+    return this.favorites.find(stry => stry.storyId === story.storyId);
   }
   // delete story from api and remove from locals StoryLists
   async removeStory(story) {
